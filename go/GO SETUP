@@ -1,0 +1,33 @@
+Download GOLANG version 1.15.2 
+=============================================
+Importing of Packages
+
+To have a functional back end blockchain process running, we need to also import a few packages to aid us in this project. 
+go get github.com/tools/godep
+
+Spew
+
+Spew is an additional package for GO language that helps us to view codes, structs and slices clearly formatted in our console.
+
+To import, just use the command prompt, and enter the following code 
+“go get github.com/davecgh/go-spew”. 
+
+
+
+
+Gorilla / Mux
+
+Gorilla/Mux is an additional package for GO language that is used for writing web handlers such as “GET” and “POST” functions. We will need this to send data to our blockchain which will be locally hosted. 
+
+To import, just use the command prompt, and enter the following code 
+“go get github.com/gorilla/mux”. 
+
+
+
+
+GoDotEnv
+
+GoDotEnv lets us read from a .env file that we keep in the root of our directory, so we do not have to hardcode things like our http ports.
+
+To import, just use the command prompt, and enter the following code 
+“go get github.com/joho/godotenv”. 
