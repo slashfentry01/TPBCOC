@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <link href="home_page.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" type="text/css" href="./MDB-Free_4.11.0/css/mdb.css">
+
+var restaurantlist_array = [];
+var restaurant_array = [];
+
+//function to call restaurantDB search API
+function search() {
+    //Retrieve search term from Restaurant.html of element with id= searchTerm
+    var searchTerm = document.getElementById('searchTerm').value;
+    //Create a GET Request to the URL ‘searchRestaurant/name’
+    var request = new XMLHttpRequest();
+    request.open("GET", "/restaurantSearch/" + searchTerm, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    //On retrieved of data from backend, initialize the value into restaurant_array and call the function 
+    request.onload = function () {
+        //retrieve response from API and parse the data into restaurant_array (intialized in app.js)
+        restaurant_array = JSON.parse(request.responseText);
+        //call displaySearchRestaurant function
+        displaySearchRestaurant();
+    };
+    request.send();
+}
+
+
+
+//function to display search restaurant using data from restaurant_array
+function displaySearchRestaurant() {
+    //retrieve empty table element from Restaurant.html
+    
+    var table = document.getElementById('restaurantliststuff');
+    //empty the table if there are any existing restaurants showing
+    table.innerHTML = '';
+    //loop through all restaurant information inside restaurant_array
+    for (var i = 0; i < restaurant_array.length; i++) {
+        //Call function formHTMLforDisplay and parse in each restaurant from array
+        var cell = formHTMLlistforDisplay(restaurant_array[i]);
+        //Insert the HTML into restaurantTable div innerHTML
+        //DOM manipulation to insert HTML into Restaurant.html
+        table.insertAdjacentHTML('beforeend', cell);
+    }
+}
+
+
+
+//filter function, using various routes with different sort and filter combinations
+function filter() { 
+    var filter = new Object();
+    var sort = new Object();
+
+    //the var radios are to allow users to uncheck radio boxes by holding down crtl while clicking
+    var radios = document.getElementsByName('cuisine_type');
+for(i=0; i<radios.length; i++ ) {
+    radios[i].onclick = function(e) {
+        if(e.ctrlKey) {
+            this.checked = false;
+        }
+    }
+}
+var radios2 = document.getElementsByName('dining_type');
+for(i=0; i<radios.length; i++ ) {
+    radios2[i].onclick = function(e) {
+        if(e.ctrlKey) {
+            this.checked = false;
+        }
+    }
+}
+var radios3 = document.getElementsByName('avgrating');
+for(i=0; i<radios.length; i++ ) {
+    radios3[i].onclick = function(e) {
+        if(e.ctrlKey) {
+            this.checked = false;
+        }
+    }
+}
+
+    filter.cuisine_type = '';
+    filter.dining_type = '';
+    sort.sortby = '';
+    //each if else statment is to account for a possible combination of filter and sort, and to get the route accordingly
+   if ((document.querySelector('input[name="cuisine_type"]:checked'))&&(document.querySelector('input[name="dining_type"]:checked'))&&(document.querySelector('input[id="arasc"]:checked'))){
+        filter.cuisine_type = document.querySelector('input[name="cuisine_type"]:checked').value;
+        sort.sortby = document.querySelector('input[id="arasc"]:checked').value;
+        filter.dining_type = document.querySelector('input[name="dining_type"]:checked').value;
+
+        var request = new XMLHttpRequest();
+    request.open("GET", "/restaurantfilter2/" + filter.cuisine_type  + '_' + filter.dining_type + '_' + sort.sortby, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.onload = function () {
+        restaurantlist_array = JSON.parse(request.responseText);
+        displayfiltersortRestaurant();
+    };
+        
+    }
+    else if ((document.querySelector('input[name="cuisine_type"]:checked'))&&(document.querySelector('input[name="dining_type"]:checked'))&& document.querySelector('input[id="nameasc"]:checked')){
+        filter.cuisine_type = document.querySelector('input[name="cuisine_type"]:checked').value;
+        sort.sortby = document.querySelector('input[id="nameasc"]:checked').value;
+        filter.dining_type = document.querySelector('input[name="dining_type"]:checked').value;
+
+        var request = new XMLHttpRequest();
+    request.open("GET", "/restaurantfilter3/" + filter.cuisine_type  + '_' + filter.dining_type + '_' + sort.sortby, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.onload = function () {
+... (335 lines left)
+Collapse
+js.txt
+18 KB
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <link href="home_page.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" type="text/css" href="./MDB-Free_4.11.0/css/mdb.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src="js/jquery-3.3.1.slim.min.js"></script>
+  <script type="text/javascript" src="./MDB-Free_4.11.0/js/addons/masonry.pkgd.min.js"></script>
+<script type="text/javascript" src="./MDB-Free_4.11.0/js/addons/imagesloaded.pkgd.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"></script>
+<script src="js/homepage.js"></script>
+<script src="js/restaurantlist.js"></script>
+<script src="js/w3.js"></script>
+
+<script>
+    //to bring in other HTML on the fly into this page
+    w3.includeHTML();
+</script>
+
+<script>
+  var mybutton = document.getElementById("myBtn");
+ 
+ // When the user scrolls down 20px from the top of the document, show the button
+ window.onscroll = function() {scrollFunction()};
+ 
+ function scrollFunction() {
+   if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+     mybutton.style.display = "block";
+   } else {
+     mybutton.style.display = "none";
+   }
+ }
+ 
+ // When the user clicks on the button, scroll to the top of the document
+ function topFunction() {
+   document.body.scrollTop = 0;
+   document.documentElement.scrollTop = 0;
+ }
+  
+  </script>
+
+
+
+
+<style>
+  body{
+      background-color: rgba(0, 0, 0, 0.836);
+  }
+  
+  </style>
+  <style>
+    .checked {
+      color: orange;
+    }</style>
+</head>
+
+<body onload=" loggedin(), getRestaurantlistData(), filter(), search()" >
+
+
+
+  <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+  
+  <div id="profiledetails" style="margin-bottom: 2em;">
+    <nav class="navbar navbar-expand-sm navbar-dark" >
+            
+      <a class="navbar-brand" href="home_page.html" > <img src="../images/ed487e79-5b57-4494-91ad-4ed9162e8997_200x200.png"  ></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav ml-auto">
+       <li class="nav-item">
+             <a class="nav-link" href="home_page.html">Home</a>
+       </li>
+       <li class="nav-item">
+             <a class="nav-link" href="restaurant_list.html">Restaurants & Reviews</a>
+       </li>
+       <li class="nav-item">
+        <a class="nav-link" href="login_page.html">Login </a> 
+       </li>
+   </ul>
+  </div>
+   </nav> 
+  </div>
+
+
+ 
+
+
+
+     
+
+     <div class="row" style="margin: auto;  width: 100%; ">
+
+<div class="col-12" >
+<div class="card">
+  <div class="card-body">
+
+  <h3>Filters</h3>
+  <hr style="border-width: 1px; border-color: black;  display: block; margin-left: 1em; margin-right: 1em; margin-top: 2em   ;">
+<div class="row">
+  <div class="col-6">
+  <h5>Cuisine</h5>
+  <input type="radio"  id="cf" name="cuisine_type" value="french" >French
+  <input type="radio"  id="ct" name="cuisine_type" value="Thai">Thai
+ <input type="radio"  id="cc" name="cuisine_type" value="Chinese">Chinese<br>
+ <input type="radio"  id="cw" name="cuisine_type" value="Western">Western
+ <input type="radio"  id="ci" name="cuisine_type" value="Indian">Indian
+</div>
+<div class="col-6">
+ <h5>Dining Type</h5>
+<input type="radio"  id="dtff" name="dining_type" value="Fast Food" >Fast Food
+<input type="radio"  id="dtfd" name="dining_type" value="Fine Dining">Fine Dining
+<input type="radio"  id="dtc" name="dining_type" value="Cafe">Cafe<br>
+<input type="radio"  id="dtr" name="dining_type" value="Restaurant">Restaurant
+<input type="radio"  id="dtfc" name="dining_type" value="Food Court">Food Court
+</div>
+</div>
+
+
+<br>
+
+<button type="submit" onclick="filter()">Filter</button>
+
+
+<br><br><br>
+<h3>Sorting Results</h3>
+<hr style="border-width: 1px; border-color: black;  display: block; margin-left: 1em; margin-right: 1em; margin-top: 2em   ;">
+<div class="row">
+  <div class="col-4">
+          <h5>Average Rating</h5>
+          <input type="radio"  id="arasc" name="avgrating"  value="ASC" >Ascending<br>
+          <input type="radio"  id="arasc" name="avgrating" value="DESC">Descending<br>
+        </div>
+        <div class="col-4">
+          <h5>Total Reviews</h5>
+          <input type="radio"  id="trasc" name="avgrating" value="ASC" >Ascending<br>
+          <input type="radio"  id="trasc" name="avgrating" value="DESC">Descending<br>
+        </div>
+          <div class="col-4">
+          <h5>Name</h5>
+<input type="radio"  id="nameasc" name="avgrating" value="ASC"  >A-Z<br>
+<input type="radio"  id="nameasc" name="avgrating" value="DESC">Z-A<br>
+</div>
+</div>
+<br>
+<button type="submit" onclick="sort()">Sort</button>
+         
+
+
+  </div>
+
+</div>
+
+</div>
+</div>
+
+
+     <br>
+     <br>
+     <form>
+          
+      <div ><input id="searchTerm" name="searchTerm" type="text" placeholder="What're you searching for?" style="width: 50%; margin: auto;" class="form-control form-control-underlined">
+        <input type="button" onclick="search()" value="Submit">
+      </div>
+   
+    </form>
+
+
+ <div class="row" style="width: 100%;" id="restaurantliststuff">
+      
+ </div>
+    
+      
+    
+    
+ 
+    
+    <footer class="page-footer font-small unique-color-dark pt-4">
+      <div class="container">
+
+        <ul class="list-unstyled list-inline text-center py-2">
+          <li class="list-inline-item">
+            <a href="file:///C:/Users/natha/Documents/part%203%20vsc/html_stuff/contact.html" class="contact-btn">Contact Us</a>
+          </li>
+          <li class="list-inline-item">
+            <a href="file:///C:/Users/natha/Documents/part%203%20vsc/html_stuff/faq.html" class="contact-btn">FAQ</a>
+          </li>
+          
+        </ul>
+        <!-- Call to action -->
+    
+      </div>
+      <!-- Footer Elements -->
+    
+      <!-- Copyright -->
+      <div class="footer-copyright text-center py-3">Â© 2020 Copyright:
+        <a href="https://mdbootstrap.com/education/bootstrap/"> MDBootstrap.com</a>
+      </div>
+      <!-- Copyright -->
+    
+    </footer>
+      
+</body>
+
+
+
+
+
+</html>

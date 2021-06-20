@@ -1,0 +1,444 @@
+<?php
+include 'init.php';
+/////////////////////////////////////////////////
+session_start();
+if (isset($_SESSION['email']) == true) {
+    $email = $_SESSION['email'];
+    $username = $_SESSION['username'];
+    // echo "WELCOMEEEEE" . $email . $name;
+    ////////////////////////////////////
+    $time = $_SERVER['REQUEST_TIME'];
+
+/**
+* for a 30 minute timeout, specified in seconds
+*/
+$timeout_duration = 1800;
+
+/**
+* Here we look for the user's LAST_ACTIVITY timestamp. If
+* it's set and indicates our $timeout_duration has passed,
+* blow away any previous $_SESSION data and start a new one.
+*/
+if (isset($_SESSION['LAST_ACTIVITY']) &&
+   ($time - $_SESSION['LAST_ACTIVITY']) > $timeout_duration) {
+    session_unset();
+    session_destroy();
+    header("location: signup.php");
+}
+
+/**
+* Finally, update LAST_ACTIVITY so that our timeout
+* is based on it and not the user's login time.
+*/
+$_SESSION['LAST_ACTIVITY'] = $time;
+//////////////////////////////////////////
+}else{
+    header("location: signup.php");
+}
+// set time-out period (in seconds)
+
+//CHECK IF VALID USER
+//////////////////////////////////////////////////
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+
+        <!-- -------------------------------------------------------------------------------------------------- -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>MyLocalMarketPlace</title>
+        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+       
+
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+            <div class="container">
+                <a class="navbar-brand js-scroll-trigger" href="#page-top">MyLocalMarketPlace</a>
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#projects">Stores</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#signup">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="profile.php">My Profile -- <?php echo $username?> </a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="logout.php">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Masthead-->
+        <header class="masthead">
+            <div class="container d-flex h-100 align-items-center">
+                <div class="mx-auto text-center">
+                    <h1 class="mx-auto my-0 text-uppercase">WELCOME!</h1>
+                    <h2 class="text-white-50 mx-auto mt-2 mb-5">Shop with us today!</h2>
+                    <a class="btn btn-primary js-scroll-trigger" href="#about">Get Started</a>
+                </div>
+            </div>
+        </header>
+        <!-- About-->
+        <section class="about-section text-center" id="about">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <h2 class="text-white mb-4">We offer great offers from many,many merchants!</h2>
+                        <p class="text-white-50">
+                        View your favourite products and add to cart today!
+                        </p>
+
+                    </div>
+                </div>
+                <img class="img-fluid" src="assets/img/ipad.png" alt="" />
+                
+            </div>
+
+        </section>
+        <header class="masthead">
+
+        </header>
+        <!-- Projects-->
+
+
+
+
+<?php
+    $query = "SELECT * FROM products WHERE product_state='in'";
+    $result = mysqli_query($conn, $query);
+    echo "<h1 class='mx-auto my-0 text-uppercase'>IN Evidences!</h1>";
+    echo"<br>";
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            $productID = $row["product_id"];
+            $productTitle = $row["product_title"];
+            $productDesc = $row["product_desc"];
+            $productImage = $row["product_image"];
+            $productKeywords = $row["product_keywords"];
+            $productPort = $row["product_port"];
+            $productState = $row["product_state"];
+            //echo $zone1;
+            //header("Location: " .  $row['link'] . " ");
+            //echo
+            //echo "number: " . $number1. "<br>";
+            // echo "email: " . $email. "<br>";
+            // echo "password: " . $row["password"]. "<br>";
+            // echo "image: " . $row["image"]. "<br>";
+
+            echo "<table class='table table-bordered table-dark'>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th scope='col'>product_id</th>";
+            echo "<th scope='col'>product_title</th>";
+            echo "<th scope='col'>product_desc</th>";
+            echo "<th scope='col'>product_image</th>";
+            echo "<th scope='col'>product_keywords</th>";
+            echo "<th scope='col'>product_ports</th>";
+            echo "<th scope='col'>product_state</th>";
+            echo "<th scope='col'>action</th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
+            // echo "<form action='profileAdmin.php' method='POST' >";
+            echo "<tr>";
+            echo "<td>$productID</th>";
+            echo "<td>$productTitle</td>";
+            echo "<td>$productDesc</td>";
+            echo "<td><img width='30%' src='./product_images/$productImage' style=width: 20rem;></td>";
+            echo "<td>$productKeywords</td>";
+            echo "<td>$productPort</td>";
+            echo "<td>$productState</td>";
+            echo "<form action='productOut.php' method='POST' >";
+            echo "<input type='hidden' name='productToRemove' id='hiddenField' value='$productID' />";
+            echo "<td><button type='submit' class='btn btn-primary btn-sm'>Check Out</button></td>";
+            echo "</form>";
+            // echo "<input type='hidden' name='emailToEdit' id='hiddenField' value='$email1' />";
+            // echo "<input type='hidden' name='userToEdit' id='hiddenField' value='$username1' />";
+            // echo "<td><button type='submit' class='btn btn-primary btn-sm'>Reset</button></td>";
+            // if($role1 == 'admin'){
+            // echo "</form>";
+            // echo "<form action='revokeAdmin.php' method='POST' >";
+            // echo "<input type='hidden' name='userToRevokeAdmin' id='hiddenField' value='$username1' />";
+            // echo "<td><button type='submit' class='btn btn-primary btn-sm'>Revoke Admin</button></td>";
+            // echo "</form>";
+            //}
+            echo "</tr>";
+            echo "</tbody>";
+            echo "</table>";
+            //cant display password; data exposure vuln!
+        }
+        } else {
+        echo "Everything has been checked out";
+        //header('Location: ../cdenoexst');
+        }
+
+    ?>
+<br>
+<br>
+<br>
+<br>
+<br>
+<?php
+    $query = "SELECT * FROM products WHERE product_state='out'";
+    $result = mysqli_query($conn, $query);
+    echo "<h1 class='mx-auto my-0 text-uppercase'>OUT Evidences!</h1>";
+    echo"<br>";
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            $productID = $row["product_id"];
+            $productTitle = $row["product_title"];
+            $productDesc = $row["product_desc"];
+            $productImage = $row["product_image"];
+            $productKeywords = $row["product_keywords"];
+            $productPort = $row["product_port"];
+            $productState = $row["product_state"];
+            //echo $zone1;
+            //header("Location: " .  $row['link'] . " ");
+            //echo
+            //echo "number: " . $number1. "<br>";
+            // echo "email: " . $email. "<br>";
+            // echo "password: " . $row["password"]. "<br>";
+            // echo "image: " . $row["image"]. "<br>";
+
+            echo "<table class='table table-bordered table-dark'>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th scope='col'>product_id</th>";
+            echo "<th scope='col'>product_title</th>";
+            echo "<th scope='col'>product_desc</th>";
+            echo "<th scope='col'>product_image</th>";
+            echo "<th scope='col'>product_keywords</th>";
+            echo "<th scope='col'>product_ports</th>";
+            echo "<th scope='col'>product_state</th>";
+            echo "<th scope='col'>action</th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
+            // echo "<form action='profileAdmin.php' method='POST' >";
+            echo "<tr>";
+            echo "<td>$productID</th>";
+            echo "<td>$productTitle</td>";
+            echo "<td>$productDesc</td>";
+            echo "<td><img width='30%' src='./product_images/$productImage' style=width: 20rem;></td>";
+            echo "<td>$productKeywords</td>";
+            echo "<td>$productPort</td>";
+            echo "<td>$productState</td>";
+            echo "<form action='productIn.php' method='POST' >";
+            echo "<input type='hidden' name='productToAdd' id='hiddenField' value='$productID' />";
+            echo "<td><button type='submit' class='btn btn-primary btn-sm'>Check In</button></td>";
+            echo "</form>";
+            // echo "<input type='hidden' name='emailToEdit' id='hiddenField' value='$email1' />";
+            // echo "<input type='hidden' name='userToEdit' id='hiddenField' value='$username1' />";
+            // echo "<td><button type='submit' class='btn btn-primary btn-sm'>Reset</button></td>";
+            // if($role1 == 'admin'){
+            // echo "</form>";
+            // echo "<form action='revokeAdmin.php' method='POST' >";
+            // echo "<input type='hidden' name='userToRevokeAdmin' id='hiddenField' value='$username1' />";
+            // echo "<td><button type='submit' class='btn btn-primary btn-sm'>Revoke Admin</button></td>";
+            // echo "</form>";
+            //}
+            echo "</tr>";
+            echo "</tbody>";
+            echo "</table>";
+            //cant display password; data exposure vuln!
+        }
+        } else {
+        echo "Nothing Has Been Checked out!";
+        //header('Location: ../cdenoexst');
+        }
+
+    ?>
+
+
+
+
+
+
+
+
+
+
+
+<?php
+//echo "EDIT HERE"; //insert code here
+///////////////////////////////////////////
+//store display
+/////////////////////////////////////////////
+
+$mysql_host="localhost"; // Setup connection to databasae
+$mysql_user="root";
+$mysql_password="";
+$mysql_db="swapsite";
+
+$con = new mysqli($mysql_host,$mysql_user,$mysql_password,$mysql_db);
+if (!$con){
+    echo $con->errno ."<br>";
+    die('Could not connect: '. $con->error);
+}
+else {
+    //echo "Connection to DB server at $mysql_host successful<br>"; //establish the connection to Dbase
+}
+
+    // select statement
+        $query = "SELECT * FROM stores";
+        $result = mysqli_query($conn, $query);
+
+//            if ($result->num_rows > 0) {
+//             // output data of each row
+
+
+//            while ($row=$result->fetch_assoc()) {
+//                $store_name=$row['store_name'];
+//                $imagesrc=$row["image"];
+//                // echo $store_name;
+//                echo'<section class="projects-section bg-light" id="projects">';
+//                echo '<div class="container">';
+//                echo '<div class="col-xl-8 col-lg-7">';
+//                echo '<img width="100%"';
+//                echo 'src="';
+//               print_r("uploadStore/" . $imagesrc);
+//                echo '"alt="" />';
+//                echo '</div>';
+//                echo '<div class="col-xl-4 col-lg-5">';
+//                echo '<div class="featured-text text-center text-lg-left">';
+//                   echo '<h4>';
+//                   echo "Store:" . " " . $row['store_name'];
+//                   echo '</h4>';
+//                          echo      '<p class="text-black-50 mb-0">';
+//                        echo  'Address:' . ' ' ;
+//                        echo $row['store_address'];
+//                        echo'</p>';
+//                              echo '<p class="text-black-50 mb-0">';
+//                              echo 'Email:' . ' ' ;
+//                              echo $row['store_email'];
+//                              echo'</p>';
+
+//                             echo '<p class="text-black-50 mb-0">';
+//                              echo 'Contact:' . ' ' ;
+//                              echo $row['store_contact'];
+//                              echo'</p>';
+
+//                            echo '<p class="text-black-50 mb-0">';
+//                              echo 'Website:' . ' ' ;
+//                              echo $row['store_website'];
+//                              echo'</p>';
+
+//                        echo '<br>';
+//                        echo '<br>';
+//                        echo "<form action='store1.php' method='POST'>";
+//                                 echo "<input type='hidden' name='store_name_toInventory' id='hiddenField' value='$store_name' />";
+//                                 echo "<input type='hidden' name='imagesrc' id='hiddenField' value='$imagesrc' />";
+//                                 echo "<td><button type='submit' class='btn btn-primary btn-sm'  name='store_to_inventory'>View Store</button></td>";
+//                        echo "</form>";
+//                        echo '</div>';
+//                        echo '</div>';
+//                        echo '</div>';
+//                        echo '</div>';
+//                        echo '</div>';
+//                        echo '</div>';
+//                        echo '</section>';
+//                        echo '<br>';
+//        }
+
+//    }
+//    else {
+//        echo "0 records<br>";
+//    }
+
+
+//echo "<p>Disconnecting now</p>";
+$con->close();
+?>
+
+
+
+        </section>
+        <!-- Signup-->
+        <section class="signup-section" id="signup">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10 col-lg-8 mx-auto text-center">
+                        <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
+                        <h2 class="text-white mb-5">Contact Support Team</h2>
+                        <p class="text-white mb-4">Kindly enter your email, and our support team will be there to assist you within the next working day.</p>
+                        <br>
+                        <br>
+                        <form class="form-inline d-flex" action="contact.php" method="POST" >
+                            <input class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" type="email" name="email_req" placeholder="Enter email address..." />
+
+                            <button class="btn btn-primary mx-auto" type="submit" name="Contact">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Contact-->
+        <section class="contact-section bg-black">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="card py-4 h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-map-marked-alt text-primary mb-2"></i>
+                                <h4 class="text-uppercase m-0">Address</h4>
+                                <hr class="my-4" />
+                                <div class="small text-black-50">Block 1 Temasek Polytechnic</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="card py-4 h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-envelope text-primary mb-2"></i>
+                                <h4 class="text-uppercase m-0">Email</h4>
+                                <hr class="my-4" />
+                                <div class="small text-black-50"><a href="#!">support@mylocalmarketplace.com</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="card py-4 h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-mobile-alt text-primary mb-2"></i>
+                                <h4 class="text-uppercase m-0">Phone</h4>
+                                <hr class="my-4" />
+                                <div class="small text-black-50">+6567882000</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="social d-flex justify-content-center">
+                    <a class="mx-2" href="#!"><i class="fab fa-twitter"></i></a>
+                    <a class="mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
+                    <a class="mx-2" href="#!"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </section>
+        <!-- Footer-->
+        <footer class="footer bg-black small text-center text-white-50"><div class="container">Copyright Group 5's Website 2020</div></footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+        <!-- Third party plugin JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>

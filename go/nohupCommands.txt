@@ -1,0 +1,2 @@
+dpkg -S /usr/bin/nohup  //download nohup
+nohup go run main.go&   //loop the main.go process
