@@ -58,6 +58,10 @@ include 'init.php';
                                 <span data-feather="shopping-cart"></span>
                                 Evidences Blockchain
                             </a>
+                            <a class="dropdown-item <?php echo ($page == 'index2.php') ? 'active' : ''; ?>" href="index2.php">
+                                <span data-feather="shopping-cart"></span>
+                                Audit Trail
+                            </a>
                         </div>
                     </div>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="profile.php">My Profile -- <?php echo $username ?> </a></li>
