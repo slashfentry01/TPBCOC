@@ -157,8 +157,8 @@
                   </div>
                 </div>
                 <div class="member-info">
-                  <h4>Walter White</h4>
-                  <span>Chief Executive Officer</span>
+                  <h4>Nigel Lum</h4>
+                  <span>Built Different</span>
                 </div>
               </div>
             </div>
@@ -176,7 +176,7 @@
                 </div>
                 <div class="member-info">
                   <h4>Yusuf Kotty</h4>
-                  <span>Product Manager</span>
+                  <span>Enigma</span>
                 </div>
               </div>
             </div>
@@ -184,7 +184,7 @@
             <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
               <div class="member">
                 <div class="member-img">
-                  <img src="assets/imgOne/team/team-3.jpg" class="img-fluid" alt="">
+                  <img src="assets/imgOne/team/nathan.png" class="img-fluid" alt="">
                   <div class="social">
                     <a href=""><i class="bi bi-twitter"></i></a>
                     <a href=""><i class="bi bi-facebook"></i></a>
@@ -193,7 +193,7 @@
                   </div>
                 </div>
                 <div class="member-info">
-                  <h4>William Anderson</h4>
+                  <h4>Nathan Teo</h4>
                   <span>CTO</span>
                 </div>
               </div>
@@ -202,7 +202,7 @@
             <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
               <div class="member">
                 <div class="member-img">
-                  <img src="assets/imgOne/team/team-4.jpg" class="img-fluid" alt="">
+                  <img src="assets/imgOne/team/harish.jpg" class="img-fluid" alt="">
                   <div class="social">
                     <a href=""><i class="bi bi-twitter"></i></a>
                     <a href=""><i class="bi bi-facebook"></i></a>
@@ -211,8 +211,8 @@
                   </div>
                 </div>
                 <div class="member-info">
-                  <h4>Amanda Jepson</h4>
-                  <span>Accountant</span>
+                  <h4>Murugan Harish</h4>
+                  <span>Master Archiver</span>
                 </div>
               </div>
             </div>
@@ -221,21 +221,7 @@
   
         </div>
       </section><!-- End Team Section -->
-        <!-- Signup-->
-        <section class="signup-section" id="signup">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-10 col-lg-8 mx-auto text-center">
-                        <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
-                        <h2 class="text-white mb-5">Subscribe to receive updates!</h2>
-                        <form class="form-inline d-flex">
-                            <input class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" type="email" placeholder="Enter email address..." />
-                            <button class="btn btn-primary mx-auto" type="submit">Subscribe</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
+    
         <!-- Contact-->
         <section class="contact-section bg-black">
             <div class="container">
